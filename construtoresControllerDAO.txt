@@ -1,0 +1,22 @@
+public class AreaDAO {
+
+	private Connection connection;
+
+	public AreaDAO(Connection connection) {
+		this.connection = connection;
+	}
+...
+}
+
+
+public class AreaController {
+
+	private AreaDAO areaDAO;
+
+	public AreaController() {
+		Connection connection = new ConnectionFactory().conectar();
+		areaDAO = new AreaDAO(connection);
+	}
+
+...
+}

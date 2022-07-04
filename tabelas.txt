@@ -1,0 +1,61 @@
+DROP SEQUENCE candidato_sequence;
+DROP SEQUENCE area_sequence;
+DROP TRIGGER tr_insert_id_candidato;
+DROP TRIGGER tr_insert_id_area;
+DROP TABLE CANDIDATO;
+DROP TABLE AREA_ATUACAO;
+
+CREATE TABLE AREA_ATUACAO(
+  idArea integer PRIMARY KEY NOT NULL,
+  nome varchar(45) NOT NULL
+);
+
+
+CREATE TABLE CANDIDATO (
+  idCandidato integer PRIMARY KEY NOT NULL,
+  nome varchar(45) NOT NULL,
+  data_nasc date NOT NULL,
+  genero varchar(10) NOT NULL,
+  tempo_experiencia float NOT NULL,
+  formacao varchar(20) NOT NULL,
+  telefone varchar(20) NOT NULL,
+  email varchar(45) NOT NULL,
+  endereco varchar(45) NOT NULL,
+  idArea integer NOT NULL,
+  CONSTRAINT FK_AREA FOREIGN KEY(idArea) REFERENCES AREA_ATUACAO (idArea)
+);
+
+
+CREATE SEQUENCE candidato_sequence START WITH 1 INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER tr_insert_id_candidato
+BEFORE INSERT ON candidato FOR EACH ROW       
+BEGIN
+ 
+SELECT candidato_sequence.NEXTVAL
+INTO :NEW.idCandidato
+FROM DUAL;
+END;
+/
+
+
+CREATE SEQUENCE area_sequence START WITH 1 INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER tr_insert_id_area
+BEFORE INSERT ON area_atuacao FOR EACH ROW       
+BEGIN
+ 
+SELECT area_sequence.NEXTVAL
+INTO :new.idArea
+FROM DUAL;
+END;
+/
+
+INSERT INTO area_atuacao (nome) VALUES ('Desenvolvimento Backend');
+INSERT INTO area_atuacao (nome) VALUES ('Desenvolvimento Frontend');
+INSERT INTO area_atuacao (nome) VALUES ('Desenvolvimento Fullstack');
+INSERT INTO area_atuacao (nome) VALUES ('DBA');
+INSERT INTO area_atuacao (nome) VALUES ('Infra estrutura');
+INSERT INTO area_atuacao (nome) VALUES ('Gestão de T.I');
+
+COMMIT;

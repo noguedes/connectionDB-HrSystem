@@ -1,0 +1,25 @@
+public List<Candidato> listarPorArea(int idArea) {
+		List<Candidato> candidatos = new ArrayList<Candidato>();
+		try {
+
+			String sql = "SELECT idCandidato, nome, dataNasc, genero, tempoExperiencia, formacao, telefone, email, endereco, idArea FROM CANDIDATO WHERE idArea = ?";
+
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			stmt.setInt(1, idArea);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Candidato candidato = new Candidato();
+				candidato.setId(rs.getInt(1));
+				candidato.setNome(rs.getString(2));
+				candidato.setDescricao(rs.getString(3));
+				candidato.setCategoriaId(rs.getInt(4));
+				candidatos.add(candidato);
+			}
+			stmt.close();
+			rs.close();
+			return candidatos;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
